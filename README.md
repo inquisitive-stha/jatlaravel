@@ -1,0 +1,1 @@
+docker compose exec --user laravel jatlaravel_app php artisan install:api
