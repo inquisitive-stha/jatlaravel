@@ -1,19 +1,26 @@
 #!/bin/bash
 set -e
 
-# Function to fix permissions
-fix_permissions() {
-    mkdir -p /var/www/jatlaravel/storage/logs
-    mkdir -p /var/www/jatlaravel/storage/framework/{cache,sessions,views}
-    mkdir -p /var/www/jatlaravel/bootstrap/cache
-    mkdir -p /var/www/jatlaravel/config
+## Function to fix permissions
+#fix_permissions() {
+#  chown -R laravel:laravel /var/www/jatlaravel/storage
+#  chmod -R 775 /var/www/jatlaravel/storage
+#  chown -R laravel:laravel /var/www/jatlaravel/bootstrap/cache
+#  chmod -R 775 /var/www/jatlaravel/bootstrap/cache
+#}
+#
+## Fix permissions first
+#fix_permissions
 
-    chown -R laravel:laravel /var/www/jatlaravel
-    chmod -R 775 /var/www/jatlaravel/storage /var/www/jatlaravel/bootstrap/cache
-}
+# Fix storage permissions
+chown -R laravel:laravel /var/www/jatlaravel/storage
+chmod -R 775 /var/www/jatlaravel/storage
+chown -R laravel:laravel /var/www/jatlaravel/bootstrap/cache
+chmod -R 775 /var/www/jatlaravel/bootstrap/cache
 
-# Fix permissions first
-fix_permissions
+# Create required directories if they don't exist
+mkdir -p /var/www/jatlaravel/storage/framework/{sessions,views,cache}
+chmod -R 775 /var/www/jatlaravel/storage/framework
 
 # Handle php-fpm separately (needs root for binding to ports)
 if [ "$1" = "php-fpm" ]; then
