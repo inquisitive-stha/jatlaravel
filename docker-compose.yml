@@ -1,16 +1,19 @@
-version: '3.8'
-
 services:
   # PHP-FPM Service with Laravel
   jatlaravel_app:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
     container_name: jatlaravel_app
     restart: unless-stopped
     working_dir: /var/www/jatlaravel
     volumes:
-      - ./src:/var/www/jatlaravel
+      - ./src:/var/www/jatlaravel:cached
+      - jatlaravel_storage:/var/www/jatlaravel/storage
+      - jatlaravel_cache:/var/www/jatlaravel/bootstrap/cache
     networks:
       - jatlaravel_network
 
@@ -22,7 +25,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src:/var/www/jatlaravel
+      - ./src:/var/www/jatlaravel:cached
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - jatlaravel_app
@@ -54,4 +57,8 @@ networks:
 
 volumes:
   jatlaravel_dbdata:
+    driver: local
+  jatlaravel_storage:
+    driver: local
+  jatlaravel_cache:
     driver: local

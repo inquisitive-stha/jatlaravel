@@ -1,29 +1,38 @@
 #!/bin/bash
+set -e
 
-# Check if the Laravel project already exists
+# Function to fix permissions appropriately
+fix_permissions() {
+    # Create directories if they don't exist
+    mkdir -p /var/www/jatlaravel/storage/logs
+    mkdir -p /var/www/jatlaravel/storage/framework/cache
+    mkdir -p /var/www/jatlaravel/storage/framework/sessions
+    mkdir -p /var/www/jatlaravel/storage/framework/views
+    mkdir -p /var/www/jatlaravel/bootstrap/cache
+
+    # Fix permissions
+    find /var/www/jatlaravel/storage -type d -exec chmod 775 {} \;
+    find /var/www/jatlaravel/storage -type f -exec chmod 664 {} \;
+    chmod -R 775 /var/www/jatlaravel/bootstrap/cache
+
+    # Set ownership
+    chown -R laravel:laravel /var/www/jatlaravel
+}
+
+# Create Laravel project if needed
 if [ ! -f "/var/www/jatlaravel/artisan" ]; then
-    echo "Creating new Laravel 12 project..."
-    cd /tmp
-    laravel new jatlaravel --github --jet --teams
-    # Move all Laravel project files to the working directory
-    shopt -s dotglob
-    mv /tmp/jatlaravel/* /var/www/jatlaravel/
-    cd /var/www/jatlaravel
-
-    # Update .env file with MySQL connection settings
-    sed -i 's/DB_HOST=127.0.0.1/DB_HOST=jatlaravel_db/g' .env
-    sed -i 's/DB_DATABASE=laravel/DB_DATABASE=jatlaravel_db/g' .env
-    sed -i 's/DB_USERNAME=root/DB_USERNAME=db_user/g' .env
-    sed -i 's/DB_PASSWORD=/DB_PASSWORD=db_password/g' .env
-
-    # Set directory permissions
-    chown -R www-data:www-data /var/www/jatlaravel/storage
-    chmod -R 775 /var/www/jatlaravel/storage /var/www/jatlaravel/bootstrap/cache
-
-    echo "Laravel 12 project created successfully!"
-else
-    echo "Laravel project already exists."
+    gosu laravel composer create-project laravel/laravel . --prefer-dist
+    fix_permissions
 fi
 
-# Execute the main container command
-exec "$@"
+# Always fix permissions for critical directories
+fix_permissions
+
+# Special case for php-fpm which needs to be run as root initially
+if [ "$1" = "php-fpm" ]; then
+    # This allows PHP-FPM to bind to privileged ports and write to stdout/stderr
+    exec "$@"
+else
+    # Run other commands as laravel user
+    exec gosu laravel "$@"
+fi
