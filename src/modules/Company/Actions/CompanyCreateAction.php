@@ -2,7 +2,7 @@
 
 namespace Modules\Company\Actions;
 
-use Modules\Company\DTO\CompanyCreateActionDTO;
+use Modules\Company\DTO\V1\CompanyCreateActionDTO;
 use Modules\Company\Models\Company;
 
 class CompanyCreateAction

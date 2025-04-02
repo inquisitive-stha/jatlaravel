@@ -5,13 +5,16 @@ namespace Modules\Company\Http\Requests\V1;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class BaseCompanyRequest extends FormRequest
+class CompanyBaseRequest extends FormRequest
 {
     public function mappedAttributes(array $otherAttributes = []): array
     {
         $attributeMap = array_merge([
             'data.attributes.name' => 'name',
             'data.attributes.location' => 'location',
+            'data.attributes.createdAt' => 'created_at',
+            'data.attributes.updatedAt' => 'updated_at',
+            'data.relationships.user.data.id' => 'user_id',
         ], $otherAttributes);
 
         $attributesToUpdate = [];

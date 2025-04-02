@@ -4,7 +4,7 @@ namespace Modules\Company\Http\Requests\V1;
 
 use Illuminate\Validation\Rule;
 
-class CompanyStoreRequest extends BaseCompanyRequest
+class CompanyStoreRequest extends CompanyBaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

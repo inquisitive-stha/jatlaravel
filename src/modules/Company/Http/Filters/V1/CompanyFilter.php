@@ -16,6 +16,10 @@ class CompanyFilter extends QueryFilter
         'updated_at'
     ];
 
+    public function id($value) {
+        return $this->builder->whereIn('id', explode(',', $value));
+    }
+
     public function name($value)
     {
         $likeStr = str_replace('*', '%', $value);
@@ -40,7 +44,7 @@ class CompanyFilter extends QueryFilter
         return $this->builder->where('user_id', 'like', $likeStr);
     }
 
-    public function created_at($value): \Illuminate\Database\Eloquent\Builder
+    public function createdAt($value): \Illuminate\Database\Eloquent\Builder
     {
         $dates = explode(',', $value);
 
@@ -51,7 +55,7 @@ class CompanyFilter extends QueryFilter
         return $this->builder->whereDate('created_at', $value);
     }
 
-    public function updated_at($value): \Illuminate\Database\Eloquent\Builder
+    public function updatedAt($value): \Illuminate\Database\Eloquent\Builder
     {
         $dates = explode(',', $value);
 

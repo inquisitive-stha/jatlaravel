@@ -6,12 +6,12 @@ use App\Http\Controllers\Api\V1\BaseApiController;
 use App\Traits\ApiResponses;
 use Modules\Company\Actions\CompanyCreateAction;
 use Modules\Company\Actions\CompanyUpdateAction;
-use Modules\Company\DTO\CompanyCreateActionDTO;
-use Modules\Company\DTO\CompanyUpdateActionDTO;
+use Modules\Company\DTO\V1\CompanyCreateActionDTO;
+use Modules\Company\DTO\V1\CompanyUpdateActionDTO;
 use Modules\Company\Http\Filters\V1\CompanyFilter;
 use Modules\Company\Http\Requests\V1\CompanyStoreRequest;
 use Modules\Company\Http\Requests\V1\CompanyUpdateRequest;
-use Modules\Company\Http\Resource\V1\CompanyResource;
+use Modules\Company\Http\Resources\V1\CompanyResource;
 use Modules\Company\Models\Company;
 
 class CompanyController extends BaseApiController

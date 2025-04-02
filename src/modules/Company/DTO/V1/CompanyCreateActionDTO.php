@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Company\DTO;
+namespace Modules\Company\DTO\V1;
 
 use App\DTO\BaseActionDTO;
 use Illuminate\Support\Str;

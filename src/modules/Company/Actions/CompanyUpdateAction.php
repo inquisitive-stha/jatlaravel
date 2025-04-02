@@ -2,8 +2,7 @@
 
 namespace Modules\Company\Actions;
 
-use Modules\Company\DTO\CompanyCreateActionDTO;
-use Modules\Company\DTO\CompanyUpdateActionDTO;
+use Modules\Company\DTO\V1\CompanyUpdateActionDTO;
 use Modules\Company\Models\Company;
 
 class CompanyUpdateAction
