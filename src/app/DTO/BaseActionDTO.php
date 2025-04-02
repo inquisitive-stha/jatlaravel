@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\DTO;
 
 class BaseActionDTO
 {

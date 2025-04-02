@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 abstract class QueryFilter {
-    protected $builder;
-    protected $request;
-    protected $sortable = [];
+    protected Builder $builder;
+    protected Request $request;
+    protected array $sortable = [];
 
     public function __construct(Request $request)
     {
@@ -22,7 +22,8 @@ abstract class QueryFilter {
         }
     }
 
-    public function apply(Builder $builder) {
+    public function apply(Builder $builder): Builder
+    {
         $this->builder = $builder;
         foreach($this->request->all() as $key => $value) {
             if (method_exists($this, $key)) {
@@ -42,13 +43,14 @@ abstract class QueryFilter {
         return $this->builder;
     }
 
-    protected function sort($value) {
+    protected function sort($value): void
+    {
         $sortAttributes = explode(',', $value);
 
         foreach($sortAttributes as $sortAttribute) {
             $direction = 'asc';
 
-            if (strpos($sortAttribute, '-') === 0) {
+            if (str_starts_with($sortAttribute, '-')) {
                 $direction = 'desc';
                 $sortAttribute = substr($sortAttribute, 1);
             }

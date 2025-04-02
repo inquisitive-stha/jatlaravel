@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\Company\Models\Company;
+use Modules\JobApplication\Models\JobApplication;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +16,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $primaryUser = User::factory()->create([
+            'name'  => 'Saroj Shrestha',
+            'email' => 'thesarojstha@gmail.com',
+        ]);
+        $users = User::factory(9)->create();
+        $users->push($primaryUser);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        //companies
+        $companies = Company::factory(10)->create([
+            'user_id' => $users->random()->id,
+        ]);
+
+        //job applications
+        JobApplication::factory(10)->create([
+            'user_id'    => $users->random()->id,
+            'company_id' => $companies->random()->id,
         ]);
     }
 }

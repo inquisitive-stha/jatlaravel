@@ -4,7 +4,7 @@ namespace Modules\JatAuth\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class JatAuthServiceProviders extends ServiceProvider
+class JatAuthServiceProvider extends ServiceProvider
 {
     public function register()
     {
